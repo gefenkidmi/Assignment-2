@@ -44,16 +44,28 @@ const createPost = async (req: Request, res: Response) => {
 const deletePost = async (req: Request, res: Response) => {
   const postId = req.params.id;
   try {
-    const rs = await postModel.findByIdAndDelete(postId);
-    res.status(200).send(rs);
+    const post = await postModel.findByIdAndDelete(postId);
+    res.status(200).send(post);
   } catch (error) {
     res.status(400).send(error);
   }
 };
 
+
+const updatePost = async (req: Request, res: Response) => {
+  const postId = req.params.id;
+  const postBody = req.body;
+  try {
+    const post = await postModel.findByIdAndUpdate(postId, postBody);
+    res.status(200).send(post);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
 export default {
   getAllPosts,
   createPost,
+  updatePost,
   deletePost,
   getPostById,
 };
