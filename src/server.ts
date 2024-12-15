@@ -4,11 +4,14 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import express, { Express } from "express";
 import postsRoute from "./routes/post_route";
+import userRoute from "./routes/users_route"
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/posts", postsRoute);
+app.use("/users", userRoute);
+
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));

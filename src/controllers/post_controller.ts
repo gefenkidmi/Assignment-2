@@ -1,5 +1,6 @@
 import postModel from "../models/post_model";
 import { Request, Response } from "express";
+import userModel from "../models/users_model";
 
 const getAllPosts = async (req: Request, res: Response) => {
   const filter = req.query.owner;
@@ -53,15 +54,26 @@ const deletePost = async (req: Request, res: Response) => {
 
 
 const updatePost = async (req: Request, res: Response) => {
-  const postId = req.params.id;
-  const postBody = req.body;
+  const postId = req.params.id; 
+  const { content } = req.body; 
+
   try {
-    const post = await postModel.findByIdAndUpdate(postId, postBody);
-    res.status(200).send(post);
+    const updatedPost = await postModel.findByIdAndUpdate(
+      postId,
+      { content }, 
+      { new: true, runValidators: true } 
+    );
+
+    if (updatedPost) {
+      res.send(updatedPost);
+    } else {
+      res.status(404).send("Post not found");
+    }
   } catch (error) {
     res.status(400).send(error);
   }
 };
+
 export default {
   getAllPosts,
   createPost,

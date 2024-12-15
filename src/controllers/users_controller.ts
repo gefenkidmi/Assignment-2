@@ -46,11 +46,21 @@ const deleteUser = async (req: Request, res: Response) => {
 };
 
 const updateUser = async (req: Request, res: Response) => {
-    const userId = req.params.id;
-    const userDetails = req.body;
+    const userId = req.params.id; 
+    const { details } = req.body; 
+  
     try {
-      const user = await userModel.findByIdAndUpdate(userId, userDetails);
-      res.status(200).send(user);
+      const updateUser = await userModel.findByIdAndUpdate(
+        userId,
+        { details }, 
+        { new: true, runValidators: true } 
+      );
+  
+      if (updateUser) {
+        res.send(updateUser);
+      } else {
+        res.status(404).send("User not found");
+      }
     } catch (error) {
       res.status(400).send(error);
     }
