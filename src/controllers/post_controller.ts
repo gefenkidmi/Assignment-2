@@ -1,6 +1,5 @@
 import postModel from "../models/post_model";
 import { Request, Response } from "express";
-import userModel from "../models/users_model";
 
 const getAllPosts = async (req: Request, res: Response) => {
   const filter = req.query.owner;
